@@ -22,7 +22,7 @@ import {
       case FETCH_SMURF_SUCCESS:
         return {
           ...state,
-          SMURF: action.payload,
+          smurfs: action.payload,
           isFetching: false,
           error: ''
         };

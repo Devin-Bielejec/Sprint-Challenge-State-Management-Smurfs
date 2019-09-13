@@ -6,11 +6,13 @@ import reducer from "../src/reducers";
 import { Provider } from "react-redux";
 import { applyMiddleware, createStore } from "redux";
 import logger from "redux-logger";
+import thunk from "redux-thunk";
 
+const composeEnhancer = (compose) => applyMiddleware(thunk) || compose;
 
 const store = createStore(
     reducer,
-    applyMiddleware(logger)
+    composeEnhancer(applyMiddleware(logger))
   )
   
 
