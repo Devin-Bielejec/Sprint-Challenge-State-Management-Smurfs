@@ -1,27 +1,18 @@
 import React from "react";
 import "./App.css";
-import { applyMiddleware, createStore } from "redux";
-import logger from "redux-logger";
-import { Provider, connect } from "react-redux";
-import reducer from "../reducers";
-
-const store = createStore(
-  reducer,
-  applyMiddleware(logger)
-)
+import { connect } from "react-redux";
 
 
 
-const App = () => {
+
+const App = (props) => {
     return (
-      <Provider store={store}>
       <div className="App">
         <h1>SMURFS! 2.0 W/ Redux</h1>
-        {isFetching && <p>Loading...</p>}
-        {error == "" && <p>{`ERROR: ${error}`}</p>}
-        {smurfs.map(smurf => <span>smurf.name</span>)}
+        {props.isFetching && <p>Loading...</p>}
+        {props.error !== "" && <p>{`ERROR: ${props.error}`}</p>}
+        {props.smurfs.map(smurf => <span>smurf.name</span>)}
       </div>
-      </Provider>
     );
   }
 
