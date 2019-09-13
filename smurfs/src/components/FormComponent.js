@@ -3,65 +3,59 @@ import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
-function LoginForm({ values, errors, touched, isSubmitting }) {
+function FormComponent({ values, errors, touched, isSubmitting }) {
   return (
     <Form>
       <div>
-        {touched.email && errors.email && <p>{errors.email}</p>}
-        <Field type="email" name="email" placeholder="Email" />
+        {touched.name && errors.name && <p>{errors.name}</p>}
+        <Field type="text" name="name" placeholder="name" />
       </div>
+
       <div>
-        {touched.password && errors.password && <p>{errors.password}</p>}
-        <Field type="password" name="password" placeholder="Password" />
+        {touched.age && errors.age && <p>{errors.age}</p>}
+        <Field type="number" name="age" placeholder="age" />
       </div>
-      <label>
-        <Field type="checkbox" name="tos" checked={values.tos} />
-        Accept TOS
-      </label>
-      <Field component="select" name="meal">
-        <option value="gold">Gold</option>
-        <option value="silver">Silver</option>
-        <option value="platinum">Platinum</option>
-      </Field>
-      <button disabled={isSubmitting}>Submit</button>
+
+      <div>
+        {touched.height && errors.height && <p>{errors.height}</p>}
+        <Field type="text" name="height" placeholder="height" />
+      </div>
+
+      <button type="submit" disabled={isSubmitting}>Submit</button>
     </Form>
   );
 }
 
-const FormikLoginForm = withFormik({
-  mapPropsToValues({ email, password, tos, meal }) {
+const FormikFormComponent = withFormik({
+  mapPropsToValues({ name, age, height }) {
     return {
-      email: email || "",
-      password: password || "",
-      tos: tos || false,
-      meal: meal || "silver"
+      name: name || "",
+      age: age || "",
+      height: height || ""
     };
   },
   validationSchema: Yup.object().shape({
-    email: Yup.string()
-      .email("Email not valid")
-      .required("Email is required"),
-    password: Yup.string()
-      .min(16, "Password must be 16 characters or longer")
-      .required("Password is required")
+    name: Yup.string()
+      .required("Name is required"),
+    age: Yup.number()
+      .min(1, "Age minimum is 1"),
+    height: Yup.string()
+      .required("Height is required")
   }),
   handleSubmit(values, { resetForm, setErrors, setSubmitting }) {
-    if (values.email === "alreadytaken@atb.dev") {
-      setErrors({ email: "That email is already taken" });
-    } else {
-      axios
-        .post("https://yourdatabaseurlgoeshere.com", values)
-        .then(res => {
-          console.log(res); // Data was created successfully and logs to console
-          resetForm();
-          setSubmitting(false);
-        })
-        .catch(err => {
-          console.log(err); // There was an error creating the data and logs to console
-          setSubmitting(false);
-        });
+    console.log(`values going into post are`, values);
+    axios
+    .post("http://localhost:3333/smurfs", values)
+    .then(res => {
+        console.log(res); // Data was created successfully and logs to console
+        resetForm();
+        setSubmitting(false);
+    })
+    .catch(err => {
+        console.log(err); // There was an error creating the data and logs to console
+        setSubmitting(false);
+    });
     }
-  }
-})(LoginForm);
+})(FormComponent);
 
-export default FormikLoginForm;
+export default FormikFormComponent;
