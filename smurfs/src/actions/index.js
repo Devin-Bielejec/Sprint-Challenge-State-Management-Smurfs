@@ -1,4 +1,4 @@
-import axios from 'axios':
+import axios from 'axios';
 
 export const FETCH_SMURF_START = "FETCH_SMURF_START";
 export const FETCH_SMURF_SUCCESS = "FETCH_SMURF_SUCCESS";
