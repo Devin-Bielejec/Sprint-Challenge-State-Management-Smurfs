@@ -1,16 +1,36 @@
-import React, { Component } from "react";
+import React from "react";
 import "./App.css";
-class App extends Component {
-  render() {
+import { applyMiddleware, createStore } from "redux";
+import logger from "redux-logger";
+import { Provider, connect } from "react-redux";
+import reducer from "../reducers";
+
+const store = createStore(
+  reducer,
+  applyMiddleware(logger)
+)
+
+
+
+const App = () => {
     return (
+      <Provider store={store}>
       <div className="App">
         <h1>SMURFS! 2.0 W/ Redux</h1>
-        <div>Welcome to your state management version of Smurfs!</div>
-        <div>Start inside of your `src/index.js` file!</div>
-        <div>Have fun!</div>
+        {isFetching && <p>Loading...</p>}
+        {error == "" && <p>{`ERROR: ${error}`}</p>}
+        {smurfs.map(smurf => <span>smurf.name</span>)}
       </div>
+      </Provider>
     );
+  }
+
+const mapStateToProps = state => {
+  return{
+    smurfs: state.smurfs,
+    isFetching: state.isFetching,
+    error: state.error
   }
 }
 
-export default App;
+export default connect(mapStateToProps, {})(App);
